@@ -15,10 +15,6 @@
 
 #endif
 
-static void HOSTFXR_CALLTYPE ErrorWriter(const char_t *message) {
-    fprintf(stderr, "%s\n", message);
-}
-
 std::string GetExePath() {
 #ifndef NDEBUG
     if (getenv("TEST_EXE_PATH") != nullptr) {
@@ -71,11 +67,6 @@ int main(int argc, const char **argv) {
 
     GetProc(hostfxr_initialize_for_dotnet_command_line);
     GetProc(hostfxr_run_app);
-    GetProc(hostfxr_get_runtime_delegate);
-    GetProc(hostfxr_set_error_writer);
-
-    hostfxr_set_error_writer(&ErrorWriter);
-
 
     const char_t *runtimeArgs[] = {
             "exec",
@@ -91,7 +82,6 @@ int main(int argc, const char **argv) {
         appArgs[c] = runtimeArgs[c];
     for(size_t c = 0; c < argc - 1; c++)
         appArgs[runtimeArgCount + c] = argv[c + 1];
-
 
     void *context = nullptr;
 
